@@ -21,7 +21,7 @@ class Router
                     $param = explode('=', $paramItem);
                     $params[$param[0]] = $param[1];
                 }
-                if (isset($params['room']) && is_numeric($params['room']) && $params['room'] < 100) {
+                if (isset($params['room']) && is_numeric($params['room']) && ($params['room'] >= 0 && $params['room'] <= 100)) {
                     $room = new NumberedRoom((int)$params['room']);
                 } else {
                     $room = new Room404();

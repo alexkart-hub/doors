@@ -27,5 +27,7 @@
 </div>
 <div class="container-md">
     <? if (isset($this->room)) { ?>
-        <h1 class="text-center">Комната № <?= $this->room->getNumber(); ?></h1>
+            <? $curRoomNumber = $this->room->getNumber(); ?>
+        <h1 class="text-center">Комната № <?= $curRoomNumber; ?></h1>
     <? } ?>
+

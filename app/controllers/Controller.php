@@ -20,7 +20,8 @@ abstract class Controller implements iController
         } else {
             $fileName = 'room';
         }
-        $content_view = $_SERVER['DOCUMENT_ROOT'].'/template/views/' . $fileName . '.php';
+        $content_view = $_SERVER['DOCUMENT_ROOT'].'/template/views/content.php';
+        $page_view = $_SERVER['DOCUMENT_ROOT'].'/template/views/' . $fileName . '.php';
         require $_SERVER['DOCUMENT_ROOT'].'/template/layout.php';
     }
 }
