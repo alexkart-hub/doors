@@ -1,14 +1,26 @@
 <?php
 namespace app\controllers;
 
-abstract class Controller
-{
-    public $type = 'start';
+use app\classes\Room;
+use app\classes\StartRoom;
 
-    public function view($params)
+abstract class Controller implements iController
+{
+    public $room;
+
+    public function __construct(Room $room)
     {
-        $viewFile = $this->type . '.php';
-        $content_view = $_SERVER['DOCUMENT_ROOT'].'/template/views/' . $viewFile;
+        $this->room = $room;
+    }
+
+    public function view()
+    {
+        if ($this->room instanceof StartRoom) {
+            $fileName = 'start';
+        } else {
+            $fileName = 'room';
+        }
+        $content_view = $_SERVER['DOCUMENT_ROOT'].'/template/views/' . $fileName . '.php';
         require $_SERVER['DOCUMENT_ROOT'].'/template/layout.php';
     }
 }

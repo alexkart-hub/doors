@@ -4,9 +4,8 @@ namespace app\controllers;
 
 class RoomController extends Controller
 {
-    public function index($params)
+    public function index()
     {
-        $this->type = 'room';
-        $this->view($params);
+        $this->view();
     }
 }
