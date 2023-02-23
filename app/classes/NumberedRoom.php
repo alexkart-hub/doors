@@ -4,8 +4,6 @@ namespace app\classes;
 
 class NumberedRoom extends Room
 {
-    public $doubleOut = false;
-
     public function __construct(int $number)
     {
         $this->number = $number;

@@ -3,5 +3,15 @@
         "psr-4": {
             "app\\": "app"
         }
+    },
+    "require": {
+        "phpoffice/phpspreadsheet": "^1.23",
+      "ext-pdo": "*",
+      "ext-mysqli": "*"
+    },
+    "config": {
+        "platform": {
+            "php": "8.0"
+        }
     }
 }

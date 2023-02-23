@@ -1,27 +1,19 @@
 <?php
-namespace app\controllers;
 
-use app\classes\Room;
-use app\classes\StartRoom;
+namespace app\controllers;
 
 abstract class Controller implements iController
 {
-    public $room;
+    public $viewName;
 
-    public function __construct(Room $room)
+    public function index()
     {
-        $this->room = $room;
+        $this->view();
     }
 
     public function view()
     {
-        if ($this->room instanceof StartRoom) {
-            $fileName = 'start';
-        } else {
-            $fileName = 'room';
-        }
-        $content_view = $_SERVER['DOCUMENT_ROOT'].'/template/views/content.php';
-        $page_view = $_SERVER['DOCUMENT_ROOT'].'/template/views/' . $fileName . '.php';
-        require $_SERVER['DOCUMENT_ROOT'].'/template/layout.php';
+        $content_view = $_SERVER['DOCUMENT_ROOT'] . '/template/views/' . $this->viewName . '.php';
+        require $_SERVER['DOCUMENT_ROOT'] . '/template/layout.php';
     }
 }
