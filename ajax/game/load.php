@@ -1,10 +1,10 @@
 <?php
+$box = \app\classes\tables\BoxesTable::getInstance();
 $file = $_FILES['file_path'];
 if (empty($file)) {
     $result = ['success' => false, 'message' => 'Выберите файл!'];
 } else {
     $db = \app\classes\Db\DbFactory::get();
-//    $db->createTable('test');
 
     $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReaderForFile($file['tmp_name']);
     $reader->setReadDataOnly(true);
@@ -17,13 +17,15 @@ if (empty($file)) {
             $rowNum = $row->getRowIndex();
             $name = $sheet->getCell('A' . $rowNum)->getValue();
             $count = $sheet->getCell('B' . $rowNum)->getValue();
-            $range = $sheet->getCell('C' . $rowNum)->getValue();
+            $rooms = $sheet->getCell('C' . $rowNum)->getValue();
             $arData[$sheetTitle][$name] = [
                 'count' => $count,
-                'range' => $range,
+                'rooms' => $rooms,
             ];
         }
     }
+
+    $roomsTable = \app\classes\tables\RoomsTable::getInstance();
 
     $result = ['success' => true, 'message' => 'Ок', 'data' => $arData];
 }

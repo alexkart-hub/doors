@@ -43,9 +43,19 @@ abstract class DataBase
         return self::$instance;
     }
 
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function getConnection()
+    {
+        return $this->db;
+    }
+
     abstract protected function init();
 
-    abstract public function issetDb();
+    abstract protected function issetDb();
 
-    abstract public function createDb();
+    abstract protected function createDb();
 }
