@@ -29,6 +29,11 @@ abstract class Query implements SqlData
         return "'" . $field . "'";
     }
 
+    protected function setSpace($string)
+    {
+        return " " . $string . " ";
+    }
+
     protected function setFieldQuote($field)
     {
         return "`" . $field . "`";

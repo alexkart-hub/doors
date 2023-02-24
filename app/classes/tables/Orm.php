@@ -4,11 +4,10 @@ namespace app\classes\tables;
 
 interface Orm
 {
-    public static function getMap();
-    public static function getName();
-    public static function createTable();
-    public static function add();
-    public static function delete();
-    public static function getList();
-    public static function getRow();
+    public function getMap();
+    public function getName();
+    public function add();
+    public function delete($id);
+    public function getList(array $ids = [], $asArray = false);
+    public function getById($id, $asArray = false);
 }

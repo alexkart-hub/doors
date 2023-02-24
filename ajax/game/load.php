@@ -5,7 +5,7 @@ use app\container\Container;
 $container = Container::getInstance();
 $roomsTable = $container->get(\app\classes\tables\RoomsTable::class);
 $boxesTable = $container->get(\app\classes\tables\BoxesTable::class);
-
+$rooms = $roomsTable->getById(1);
 $file = $_FILES['file_path'];
 if (empty($file)) {
     $result = ['success' => false, 'message' => 'Выберите файл!'];

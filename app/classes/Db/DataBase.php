@@ -5,7 +5,7 @@ namespace app\classes\Db;
 use app\classes\Config;
 use app\traits\Singleton;
 
-abstract class DataBase
+abstract class DataBase implements DbInterface
 {
     protected $type;
     protected $db;
@@ -48,6 +48,9 @@ abstract class DataBase
         return $this->db;
     }
 
+//    public function getArray(string $sql)
+//    {}
+
     protected function setConnection()
     {
         $config = $this->getConfig();
@@ -69,4 +72,6 @@ abstract class DataBase
     abstract protected function issetDb();
 
     abstract protected function createDb();
+
+    abstract protected function createUser($db);
 }

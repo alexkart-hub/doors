@@ -4,58 +4,66 @@ namespace app\classes\tables;
 
 use app\classes\Db\DbFactory;
 use app\classes\Db\Query\CreateTableQuery;
+use app\classes\Db\Query\SelectQuery;
 use app\container\Container;
 
 abstract class OrmTable implements Orm
 {
-    protected static $db;
-    protected static $dbName;
-    protected static Container $container;
+    protected $db;
+    protected $connection;
+    protected $dbName;
+    protected Container $container;
 
     public function __construct(Container $container)
     {
-        self::$container = $container;
-        $db = self::$container->get(DbFactory::class)->get();
-        self::$dbName = $db->getName();
-        self::$db = $db->getConnection();
+        $this->container = $container;
+        $db = $this->container->get(DbFactory::class)->get();
+        $this->dbName = $db->getName();
+        $this->connection = $db->getConnection();
+        $this->db = $db;
         if (!$this->isExistInDb()) {
             $this->createTable();
         }
     }
 
-    public static function createTable()
-    {
-        $query = self::$container->get(CreateTableQuery::class);
-        $sql = $query->setTableName(static::getName())
-            ->setFields(static::getMap())
-            ->getQuery();
-        $result = self::$db->query($sql);
-    }
-
-    public static function add()
+    public function add()
     {
         // TODO: Implement add() method.
     }
 
-    public static function delete()
+    public function delete($id)
     {
         // TODO: Implement delete() method.
     }
 
-    public static function getList()
+    public function getList(array $ids = [], $asArray = false)
     {
-        // TODO: Implement getList() method.
+        $query = $this->container->get(SelectQuery::class);
+
+        $query->table($this->getName())
+            ->where('id', $ids);
+        $result = $this->db->getArray($query->getQuery());
+        return $asArray ? $result : $this->getObjList($result);
     }
 
-    public static function getRow()
+    public function getById($id, $asArray = false)
     {
-        // TODO: Implement getRow() method.
+        return $this->getList([$id], $asArray)[0];
     }
 
     protected function isExistInDb()
     {
-        $sql = "SELECT IF(COUNT(*)>0, 'YES', 'NO') AS 'EXIST' FROM `information_schema`.`TABLES` WHERE `TABLE_SCHEMA`='" . self::$dbName . "' AND `TABLE_NAME`='" . static::getName() . "'";
-        $result = self::$db->query($sql)->fetch_row()[0];
+        $sql = "SELECT IF(COUNT(*)>0, 'YES', 'NO') AS 'EXIST' FROM `information_schema`.`TABLES` WHERE `TABLE_SCHEMA`='" . $this->dbName . "' AND `TABLE_NAME`='" . $this->getName() . "'";
+        $result = $this->db->query($sql)->fetch_row()[0];
         return $result == 'YES';
+    }
+
+    protected function createTable()
+    {
+        $query = $this->container->get(CreateTableQuery::class);
+        $sql = $query->setTableName(static::getName())
+            ->setFields(static::getMap())
+            ->getQuery();
+        $this->db->query($sql);
     }
 }
