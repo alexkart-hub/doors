@@ -2,10 +2,19 @@
 
 namespace app\classes\Db;
 
+use app\container\Container;
+
 class DbFactory
 {
-    public static function get()
+    private Container $container;
+
+    public function __construct(Container $container)
     {
-        return MysqlDb::getInstance();
+        $this->container = $container;
+    }
+
+    public function get()
+    {
+        return $this->container->get(MysqlDb::class);
     }
 }

@@ -1,4 +1,14 @@
 <?php
+
+use app\container\Container;
+use app\Request;
+use app\Router;
+
 require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
-$router = new \app\Router();
-$router->match($_SERVER['REQUEST_URI']);
+
+$container = Container::getInstance();
+
+$router = $container->get(Router::class);
+$request = $container->get(Request::class);
+
+$router->match($request->getServerParams('REQUEST_URI'));

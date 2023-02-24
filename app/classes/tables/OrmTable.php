@@ -2,18 +2,20 @@
 
 namespace app\classes\tables;
 
-use app\classes\Db\DataBase;
 use app\classes\Db\DbFactory;
 use app\classes\Db\Query\CreateTableQuery;
+use app\container\Container;
 
 abstract class OrmTable implements Orm
 {
-    public static $instance = null;
     protected static $db;
     protected static $dbName;
+    protected static Container $container;
 
-    private function __construct(DataBase $db)
+    public function __construct(Container $container)
     {
+        self::$container = $container;
+        $db = self::$container->get(DbFactory::class)->get();
         self::$dbName = $db->getName();
         self::$db = $db->getConnection();
         if (!$this->isExistInDb()) {
@@ -21,21 +23,9 @@ abstract class OrmTable implements Orm
         }
     }
 
-    private function __clone()
-    {
-    }
-
-    public static function getInstance()
-    {
-        if (static::$instance === null) {
-            static::$instance = new static(DbFactory::get());
-        }
-        return static::$instance;
-    }
-
     public static function createTable()
     {
-        $query = new CreateTableQuery();
+        $query = self::$container->get(CreateTableQuery::class);
         $sql = $query->setTableName(static::getName())
             ->setFields(static::getMap())
             ->getQuery();

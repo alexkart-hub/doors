@@ -4,9 +4,9 @@ return [
         'mysql' => [
             'connection' => [
                 'host' => 'localhost',
-                'user' => 'doorsuser',
-                'password' => 'doorspassword',
-                'name' => 'doors',
+                'user' => 'gamesuser',
+                'password' => 'gamespassword',
+                'name' => 'game_buttons',
             ]
         ]
     ]

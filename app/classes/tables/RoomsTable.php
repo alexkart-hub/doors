@@ -9,9 +9,10 @@ class RoomsTable extends OrmTable
 {
     public static function getMap()
     {
+        $field = self::$container;
         return [
-            (new FieldInt('id', 3))->setPrimary(),
-            new FieldString('name', 100)
+            $field->get(FieldInt::class, ['id', 3])->setPrimary(),
+            $field->get(FieldString::class, ['name', 100]),
         ];
     }
 

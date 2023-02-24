@@ -1,11 +1,15 @@
 <?php
-$box = \app\classes\tables\BoxesTable::getInstance();
+
+use app\container\Container;
+
+$container = Container::getInstance();
+$roomsTable = $container->get(\app\classes\tables\RoomsTable::class);
+$boxesTable = $container->get(\app\classes\tables\BoxesTable::class);
+
 $file = $_FILES['file_path'];
 if (empty($file)) {
     $result = ['success' => false, 'message' => 'Выберите файл!'];
 } else {
-    $db = \app\classes\Db\DbFactory::get();
-
     $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReaderForFile($file['tmp_name']);
     $reader->setReadDataOnly(true);
     $data = $reader->load($file['tmp_name'],2);
@@ -24,8 +28,6 @@ if (empty($file)) {
             ];
         }
     }
-
-    $roomsTable = \app\classes\tables\RoomsTable::getInstance();
 
     $result = ['success' => true, 'message' => 'Ок', 'data' => $arData];
 }
