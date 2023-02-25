@@ -3,7 +3,10 @@
 namespace app\classes\tables;
 
 use app\classes\Db\DbFactory;
+use app\classes\Db\MysqlDb;
 use app\classes\Db\Query\CreateTableQuery;
+use app\classes\Db\Query\DeleteQuery;
+use app\classes\Db\Query\InsertQuery;
 use app\classes\Db\Query\SelectQuery;
 use app\container\Container;
 
@@ -26,14 +29,55 @@ abstract class OrmTable implements Orm
         }
     }
 
-    public function add()
+    public function add(array $rows, bool $upsert = false)
     {
-        // TODO: Implement add() method.
+        if (empty($rows)) {
+            return false;
+        }
+        if (!is_array($rows[0])) {
+            $rows = [$rows];
+        }
+        /** @var InsertQuery $query */
+        $query = $this->container->get(InsertQuery::class);
+        $query->table($this->getName());
+
+        $fields = [];
+        foreach ($rows as $row) {
+            $values = [];
+            $addFields = empty($fields);
+            foreach ($row as $key => $value) {
+                if ($addFields) {
+                    $fields[] = $key;
+                }
+                $values[] = $value;
+            }
+            if ($addFields) {
+                $query->fields($fields);
+            }
+            $query->values($values);
+        }
+        if ($upsert) {
+            $query->setUpsert();
+        }
+        $sql = $query->getQuery();
+        return $this->db->query($query->getQuery());
+    }
+
+    public function update(array $rows)
+    {
+        return $this->add($rows, true);
     }
 
     public function delete($id)
     {
-        // TODO: Implement delete() method.
+        if (empty($id)) {
+            return false;
+        }
+        /** @var DeleteQuery $query */
+        $query = $this->container->get(DeleteQuery::class);
+        $query->table($this->getName())
+            ->where('id', $id);
+        return $this->db->query($query->getQuery());
     }
 
     public function getList(array $ids = [], $asArray = false)

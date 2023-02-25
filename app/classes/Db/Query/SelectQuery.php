@@ -2,11 +2,10 @@
 
 namespace app\classes\Db\Query;
 
-class SelectQuery extends Query
+class SelectQuery extends CRUDQuery
 {
     protected string $sql_start = 'SELECT ';
     protected string $sql_select = ' * ';
-    protected string $sql_from;
     protected string $sql_where = '';
 
     public function select($fields)
@@ -26,13 +25,14 @@ class SelectQuery extends Query
             }
             $arFields[] = $fieldItem;
         }
-        $this->sql_select = $this->setSpace(implode(',' , $arFields));
+        $this->sql_select = $this->setSpace(implode(',', $arFields));
         return $this;
     }
 
     public function table($name)
     {
-        $this->sql_from = ' FROM ' . $this->setFieldQuote($name);
+        $this->prefix = 'FROM';
+        parent::table($name);
         return $this;
     }
 
@@ -58,7 +58,7 @@ class SelectQuery extends Query
         $this->query =
             $this->sql_start .
             $this->sql_select .
-            $this->sql_from .
+            $this->sql_table .
             $this->sql_where;
         return $this;
     }

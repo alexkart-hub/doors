@@ -6,14 +6,8 @@ use app\classes\tables\Fields\Field;
 
 class CreateTableQuery extends Query
 {
-    protected string $tableName;
-    protected $sql_start;
+    protected $sql_start = "CREATE TABLE IF NOT EXISTS ";
     protected $sql_end;
-
-    public function __construct()
-    {
-        $this->sql_start = "CREATE TABLE IF NOT EXISTS ";
-    }
 
     public function setTableName($name)
     {
@@ -29,10 +23,11 @@ class CreateTableQuery extends Query
             $type = ' ' . $field->getType();
             $additional = $field->isNotNull() ? ' NOT NULL' : ' NULL';
             $additional .= !empty($field->getDefault()) ? " DEFAULT " . $this->setApostrofQuote($field->getDefault())  : '';
-            $sql_fields[] =$this->setFieldQuote($field->getName()) . $type . $additional;
             if ($field->isPrimary()) {
+                $additional .= $this->setSpace('AUTO_INCREMENT');
                 $primaryKey[] = $this->setFieldQuote($field->getName());
             }
+            $sql_fields[] = $this->setFieldQuote($field->getName()) . $type . $additional;
         }
         if (!empty($primaryKey)) {
             $primaryKey = ' PRIMARY KEY ' . $this->setParentheses(implode(',', $primaryKey));
