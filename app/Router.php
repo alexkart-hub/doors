@@ -22,32 +22,11 @@ class Router
 
     public function match($url)
     {
-        $action = 'index';
         $paramsAction = [];
         $urlPath = parse_url($url);
-        $query = $urlPath['query'] ?? '';
-        if ($urlPath['path'] != '/' && !$this->is_exist($urlPath['path'])) {
-            $controller = $this->container->get(Page404Controller::class);
-        } elseif ($urlPath['path'] == '/') {
-            if (!empty($query)) {
-                $arParams = explode('&', $query);
-                foreach ($arParams as $paramItem) {
-                    $param = explode('=', $paramItem);
-                    $params[$param[0]] = $param[1];
-                }
-                if (isset($params['room']) && is_numeric($params['room']) && ($params['room'] >= 0 && $params['room'] <= 100)) {
-                    if ($params['room'] == 0) {
-                        $room = $this->container->get(StartRoom::class);
-                    } else {
-                        $room = $this->container->get(NumberedRoom::class, (int)$params['room']);
-                    }
-                } else {
-                    $room = $this->container->get(Room404::class);
-                }
-            } else {
-                $room = $this->container->get(StartRoom::class);
-            }
-            $controller = $this->container->get(RoomController::class, $room);
+        if ($urlPath['path'] != '/' && !$this->isExist($urlPath['path'])) {
+            $controller = $this->container->get(GameController::class);
+            $action = 'page404';
         } else {
             $route = $this->getRoute($urlPath['path']);
             $controller = $this->container->get($route->controller);
@@ -57,21 +36,30 @@ class Router
         call_user_func_array([$controller, $action], $paramsAction);
     }
 
-    protected function is_exist($url)
+    protected function isExist($url)
     {
-        return isset($this->getRoutes()[$url]);
+        return isset($this->getRoutesData()[$url]);
     }
 
     protected function getRoute($url)
     {
-        return $this->getRoutes()[$url];
+        $routeData = $this->getRoutesData()[$url];
+        return $this->container->get(Route::class, $routeData);
     }
 
-    protected function getRoutes()
+    /**
+     * Данные роута:
+     * -Класс контроллера,
+     * -Метод контроллера (не обязательно, по-умолчанию index),
+     * -Параметры метода контроллера (не обязательно)
+     * @return array
+     */
+    protected function getRoutesData()
     {
         return [
-            '/game/load' => new Route('/game/load', GameController::class, 'load'),
-            '/ajax/game/load' => new Route('/ajax/game/load', GameController::class, 'ajax', ['load']),
+            '/' => [GameController::class],
+            '/game/load' => [GameController::class, 'load'],
+            '/ajax/game/load' => [GameController::class, 'ajax', ['load']],
         ];
     }
 }

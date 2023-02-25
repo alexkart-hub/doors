@@ -9,9 +9,10 @@ class RoomController extends Controller
 {
     public $room;
 
-    public function __construct(Room $room)
+    public function index(Room $room)
     {
         $this->room = $room;
+        $this->view();
     }
 
     public function view()

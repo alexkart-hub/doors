@@ -4,5 +4,5 @@ namespace app\controllers;
 
 interface iController
 {
-    public function index();
+    public function view();
 }
