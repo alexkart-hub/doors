@@ -10,13 +10,15 @@ use app\container\Container;
 $container = Container::getInstance();
 $roomsTable = $container->get(\app\classes\tables\RoomsTable::class);
 $rooms = [
-//    ['id' => 1, 'name' => 'Первая комната'],
-//    ['id' => 2, 'name' => 'Вторая комната'],
+    ['id' => 1, 'name' => 'Первая комната'],
+    ['id' => 2, 'name' => 'Вторая комната'],
     ['id' => 3, 'name' => 'Третья комнатка'],
-//    ['id' => 4, 'name' => 'Четвертая комната'],
+    ['id' => 4, 'name' => 'Четвертая комната'],
     ['id' => 5, 'name' => 'Пятая комнатка'],
 ];
-$roomsTable->delete(3);
+//$roomsTable->add($rooms);
+//$roomsTable->delete(3);
+$r = $roomsTable->getList();
 $file = $_FILES['file_path'];
 if (empty($file)) {
     $result = ['success' => false, 'message' => 'Выберите файл!'];

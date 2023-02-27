@@ -3,10 +3,11 @@ return [
     'db' => [
         'mysql' => [
             'connection' => [
-                'host' => 'localhost',
-                'user' => 'gamesuser',
-                'password' => 'gamespassword',
-                'name' => 'game_buttons',
+                'host' => 'mysql_gm',
+                'user' => 'gameuser',
+                'password' => 'gamepass',
+                'rootpassword' => 'gamerootpass',
+                'name' => 'game',
             ]
         ]
     ]

@@ -73,7 +73,12 @@ class InsertQuery extends CRUDQuery
     {
         $orm = new \ReflectionClass(OrmTable::class);
         $namespace = $orm->getNamespaceName();
-        $files = array_filter(scandir($namespace), function ($item) {
+        $sd = scandir($namespace);
+        if (!$sd) {
+            $path = str_replace('\\', '/', $namespace);
+            $sd = scandir($path);
+        }
+        $files = array_filter($sd, function ($item) {
             return strpos($item, '.php') !== false;
         });
         $arFields = [];
