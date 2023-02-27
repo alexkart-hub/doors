@@ -22,7 +22,8 @@ class CreateTableQuery extends Query
         foreach ($fields as $field) {
             $type = ' ' . $field->getType();
             $additional = $field->isNotNull() ? ' NOT NULL' : ' NULL';
-            $additional .= !empty($field->getDefault()) ? " DEFAULT " . $this->setApostrofQuote($field->getDefault())  : '';
+            $additional .= ' COLLATE utf8_unicode_ci';
+            $additional .= !empty($field->getDefault()) ? ' DEFAULT ' . $this->setApostrofQuote($field->getDefault())  : '';
             if ($field->isPrimary()) {
                 $additional .= $this->setSpace('AUTO_INCREMENT');
                 $primaryKey[] = $this->setFieldQuote($field->getName());

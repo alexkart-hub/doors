@@ -20,8 +20,10 @@ class MysqlDb extends DataBase
     {
         $result = $this->query($sql);
         $arRes = [];
-        while ($row = $result->fetch_assoc()) {
-            $arRes[] = $row;
+        if ($result) {
+            while ($row = $result->fetch_assoc()) {
+                $arRes[] = $row;
+            }
         }
         return $arRes;
     }

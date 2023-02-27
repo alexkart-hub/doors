@@ -45,8 +45,13 @@ class InsertQuery extends CRUDQuery
                 ', количество полей: ' . $countFields . '; Значения: ' . implode(',', $values) .
                 ', количество значений: ' . $countValues;
         }
-        $this->sql_values = empty($this->sql_values) ? $this->setSpace('VALUES') : $this->sql_values . ',' . PHP_EOL;
-        $this->sql_values .= $this->setParentheses($this->setApostrofQuote(implode("','", $values)));
+        $this->sql_values = empty($this->sql_values) ? $this->setSpace('VALUES ') : $this->sql_values . ', ' . PHP_EOL;
+        $sql_values = '';
+        foreach ($values as $value) {
+            $val = is_int($value) ? $value : $this->setApostrofQuote($value);
+            $sql_values .= empty($sql_values) ? $val : ', ' . $val;
+        }
+        $this->sql_values .= $this->setParentheses($sql_values);
         return $this;
     }
 
@@ -73,7 +78,7 @@ class InsertQuery extends CRUDQuery
     {
         $orm = new \ReflectionClass(OrmTable::class);
         $namespace = $orm->getNamespaceName();
-        $sd = scandir($namespace);
+        $sd = @scandir($namespace);
         if (!$sd) {
             $path = str_replace('\\', '/', $namespace);
             $sd = scandir($path);
