@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit bootstrap = "./test/prolog.php"
+         colors = "true"
+         stopOnFailure = "false"
+         cacheResult = "false">
+
+    <testsuites>
+        <testsuite name="example">
+            <directory>./test/example/ExampleTest.php</directory>
+        </testsuite>
+    </testsuites>
+
+    <php>
+        <env name="BASE_URL_ENV" value="http://host.docker.internal"/>
+    </php>
+
+</phpunit>
