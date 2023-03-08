@@ -1,0 +1,8 @@
+.gamer img{
+    max-width: 50px;
+}
+
+.gamer{
+    display: none;
+    position: absolute;
+}

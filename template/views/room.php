@@ -7,4 +7,7 @@
         </div>
     </div>
 </div>
+<div class="gamer" id="gamer">
+    <img src="../../img/image-436999.png">
+</div>
 
