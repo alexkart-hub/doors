@@ -7,7 +7,7 @@
         </div>
     </div>
 </div>
-<div class="gamer" id="gamer">
+<div class="gamer" id="gamer" data-x="<?=$this->roomNumber > $this->prevRoomNumber ? 1 : 2?>">
     <img src="../../img/image-436999.png">
 </div>
 

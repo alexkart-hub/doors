@@ -11,7 +11,7 @@ if ($this->room->doubleOut) {
     }
 }
 ?>
-    <div class="col-1 text-center">
+    <div class="col-1 text-center btn-right">
         <div class="flex-column">
             <a href="/?room=<?=$nextRoom1?>"class="mb-1 btn btn-secondary<?=($curRoomNumber>=100?' disabled':'')?>">></a>
             <? if ($this->room->doubleOut) {?>

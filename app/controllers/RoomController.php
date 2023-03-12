@@ -7,11 +7,23 @@ use app\classes\StartRoom;
 
 class RoomController extends Controller
 {
-    public $room;
+    public Room $room;
+    public int $roomNumber;
+    public int $prevRoomNumber;
 
     public function index(Room $room)
     {
+        $fromUrl = $this->request->getServerParams('HTTP_REFERER');
+        $fromUrlData = parse_url($fromUrl);
+        if (isset($fromUrlData['query'])) {
+            $arQuery = explode('&', $fromUrlData['query']);
+            $roomQuery = array_filter($arQuery, function ($item) {
+                return preg_match('#^room=#', $item);
+            })[0];
+            $this->prevRoomNumber = (int)str_replace('room=', '', $roomQuery);
+        }
         $this->room = $room;
+        $this->roomNumber = $room->getNumber();
         $this->view();
     }
 
