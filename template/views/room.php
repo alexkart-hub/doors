@@ -3,7 +3,7 @@
         <div class="card-body">
             <h5 class="card-title">Специальный заголовок</h5>
             <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-            <a href="#" class="btn btn-success">Кнопка</a>
+            <a href="#" class="btn btn-secondary">Кнопка</a>
         </div>
     </div>
 </div>
